@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Slide Puzzle</title>
+        <script>
+                const img = new Image();
+                img.src = 'img.jpg';
+        </script>
+        <script src="gsm.js"></script>
+        <script src="tile.js"></script>
+        <script src="slot.js"></script>
+        <script src="playstate.js"></script>
+    </head>
+    <body>
+        <script>
+            const canvas  = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            canvas.width  = 500;
+            canvas.height = 500;
+            //canvas.style.border = '1px solid black';
+            document.body.append(canvas);
+
+            var gsm;
+
+            function init(){
+                gsm = new Gsm(context);
+                gsm.set(new PlayState(gsm, canvas));
+            }
+
+            function update(){
+                gsm.update();
+            }
+
+            function render(){
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                gsm.render(context);
+            }
+
+            img.onload = function(){
+                init();
+                update();
+                render();  
+            }
+
+            /*
+            var ti = setInterval(function(){
+                update();
+                render();  
+            }, 1000/30);
+            */
+            
+            canvas.addEventListener("mousedown", function(e){
+                var pos = getPos(canvas, e);
+                gsm.getCurrentState().mouseMove(pos);
+                render();
+            });
+
+            window.addEventListener("keyup", function(e){
+                gsm.getCurrentState().moveArrow(e.keyCode);
+            }, false);
+
+            function getPos(c, e){
+                var rect = c.getBoundingClientRect();
+                return {x:e.clientX - rect.left, y: e.clientY - rect.top};
+            }
+        </script>
+    </body>
+</html>
