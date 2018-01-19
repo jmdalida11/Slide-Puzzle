@@ -2,8 +2,9 @@
     <head>
         <title>Slide Puzzle</title>
         <script>
+                const images = ['img1.jpg', 'img2.jpg', 'img3.png', 'img4.jpg'];
                 const img = new Image();
-                img.src = 'img.jpg';
+                img.src = images[Math.floor(Math.random() * images.length)];
         </script>
         <script src="gsm.js"></script>
         <script src="tile.js"></script>
